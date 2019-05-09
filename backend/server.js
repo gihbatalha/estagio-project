@@ -59,7 +59,20 @@ app.put('/category/:id', (req,res) => {
     console.log("Alterando a categoria com id ", req.params.id);
 
     category
-        .updateOne({_id:ObjectId(req.params.id)}, req.body)
+        .updateOne({_id:ObjectId(req.params.id)}, {$set:req.body}, { upsert: true })
+            .then(result => {
+                res.status(200).send(result);
+            }).catch(error => {
+                res.status(500).send("Error: "+ error);
+            });
+});
+
+
+app.delete('/category/:id', (req,res) => {
+    console.log("Deletando a categoria por id ", req.params.id);
+
+    category
+        .remove({_id:ObjectId(req.params.id)})
             .then(result => {
                 res.status(200).send(result);
             }).catch(error => {
