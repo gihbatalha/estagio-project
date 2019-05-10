@@ -15,7 +15,7 @@ const uri = "mongodb+srv://estagioYuri2019:estagio2019@cluster0-opccq.mongodb.ne
 MongoClient.connect(uri, (err, client) => {
     if (err) return console.log(err)
     category = client.db("estagioYuri2019").collection("category");
-
+    console.log("Conectado com o banco");
     app.listen(3000, function(){
         console.log("Servidor inicializado na porta 3000");
     });
