@@ -1,15 +1,15 @@
 <template>
   <div id="app">
-    <router-view/>
+    <Home></Home>
   </div>
 </template>
 
 <script>
-import Categories from './components/Categories.vue'
+import Home from './components/Home.vue'
 export default {
   name: 'App',
   components: {
-    Categories
+    Home
   }
 }
 </script>
