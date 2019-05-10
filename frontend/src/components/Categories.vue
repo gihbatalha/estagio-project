@@ -94,7 +94,6 @@
     data () {
       return {
         addCategory: false,
-        idCategoryEdit: "",
         mode: false,
         category: {},
         categories: [],
@@ -135,6 +134,8 @@
         controller.save(category)
         .then((response) => {
           console.log("Response save category:: ", response);
+          this.getCategories();
+          this.$data.addCategory = false;
         }).catch(err => {
           console.log("Error save category:: ", err);
         })
@@ -144,8 +145,6 @@
         this.$data.mode = true;
         this.$data.category = category;
         this.$data.addCategory = true;
-        window.scrollTo(0, 0);
-        this.$data.idCategoryEdit = category._id;
       },
       editCategory(category){
         console.log("Edit category::", category);
@@ -153,6 +152,8 @@
         .then((response) => {
           console.log("Response save category:: ", response);
           this.$data.category = {};
+          this.getCategories();
+          this.$data.addCategory = false;
         }).catch(err => {
           console.log("Error save category:: ", err);
         })
@@ -162,6 +163,7 @@
         controller.delete(idCategory)
         .then((response) => {
           console.log("Response save category:: ", response);
+          this.getCategories();
         }).catch(err => {
           console.log("Error save category:: ", err);
         })
