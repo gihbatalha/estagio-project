@@ -5,13 +5,13 @@
         <v-layout row wrap>
           <v-toolbar color="blue darken-2" dark>
             <v-toolbar-title>Cadastro de Categorias</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-            <v-icon v-on="on" @click="close()" large dark right>cancel</v-icon>
-            </template>
-              <span>Fechar</span>
-            </v-tooltip>
+              <v-spacer></v-spacer>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-icon v-on="on" @click="close()" large dark right>cancel</v-icon>
+                </template>
+                <span>Fechar</span>
+              </v-tooltip>
           </v-toolbar>
           <v-flex ma-4 xs12 sm12>
             <v-text-field v-model="category.name" label="Nome"></v-text-field>
@@ -28,9 +28,9 @@
             <v-toolbar-title>Listagem de Categorias</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-tooltip bottom>
-            <template v-slot:activator="{ on }">
-            <v-icon v-on="on" @click="newCategory()" fab large dark right>add_circle</v-icon>
-            </template>
+              <template v-slot:activator="{ on }">
+                <v-icon v-on="on" @click="newCategory()" fab large dark right>add_circle</v-icon>
+              </template>
               <span>Criar nova categoria</span>
             </v-tooltip>
           </v-toolbar>
@@ -48,34 +48,33 @@
                     hide-details
                   ></v-checkbox>
                 </td>
-               
                 <td class="text-xs-left">{{ props.item.name }}</td>
                 <td class="text-xs-left">
-                <v-tooltip bottom>
-                <template v-slot:activator="{ on }">
-                  <v-icon
-                    v-on="on"
-                    small
-                    class="ma-3"
-                    @click="editMode(props.item)"
-                  >
-                  edit
-                  </v-icon>
-                  </template>
-                  <span>Editar categoria</span>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <v-icon
+                        v-on="on"
+                        small
+                        class="ma-3"
+                        @click="editMode(props.item)"
+                      >
+                      edit
+                      </v-icon>
+                    </template>
+                    <span>Editar categoria</span>
                   </v-tooltip>
                   <v-tooltip bottom>
-                  <template v-slot:activator="{ on }">
-                  <v-icon
-                    v-on="on"
-                    class="ma-3"
-                    small
-                    @click="deleteCategory(props.item._id)"
-                  >
-                    delete
-                  </v-icon>
-                  </template>
-                  <span>Deletar categoria</span>
+                    <template v-slot:activator="{ on }">
+                      <v-icon
+                        v-on="on"
+                        class="ma-3"
+                        small
+                        @click="deleteCategory(props.item._id)"
+                      >
+                      delete
+                      </v-icon>
+                    </template>
+                    <span>Deletar categoria</span>
                   </v-tooltip>
                 </td>
               </template>
