@@ -1,29 +1,42 @@
 <template>
   <v-app>
-    <v-card class="mx-auto" min-width="850">
+    <v-card v-if="addCategory" class="mx-auto" min-width="850">
       <v-container  grid-list-md>
         <v-layout row wrap>
           <v-toolbar color="blue darken-2" dark>
             <v-toolbar-title>Cadastro de Categorias</v-toolbar-title>
-            <v-spacer></v-spacer>
+              <v-spacer></v-spacer>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-icon v-on="on" @click="close()" large dark right>cancel</v-icon>
+                </template>
+                <span>Fechar</span>
+              </v-tooltip>
           </v-toolbar>
           <v-flex ma-4 xs12 sm12>
             <v-text-field v-model="category.name" label="Nome"></v-text-field>
           </v-flex>
-          <v-btn @click="saveCategory(category)" color="info">Save</v-btn>
+          <v-btn v-if="mode !== false " @click="editCategory(category)" color="info">Alterar</v-btn>
+          <v-btn v-else @click="saveCategory(category)" color="info">Salvar</v-btn>
         </v-layout>
       </v-container>
     </v-card>
-    <v-spacer></v-spacer>
-    <v-card class="mx-auto" min-width="850">
+    <v-card v-else class="mx-auto" min-width="850">
       <v-container grid-list-md>
         <v-layout row wrap>
           <v-toolbar color="blue darken-2" dark>
-            <v-toolbar-title>listagem de Categorias</v-toolbar-title>
+            <v-toolbar-title>Listagem de Categorias</v-toolbar-title>
             <v-spacer></v-spacer>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on }">
+                <v-icon v-on="on" @click="newCategory()" fab large dark right>add_circle</v-icon>
+              </template>
+              <span>Criar nova categoria</span>
+            </v-tooltip>
           </v-toolbar>
           <v-flex ma-12 xs12 sm12>
-            <v-data-table  
+            <v-data-table 
+              hide-actions 
               :headers="headers"
               :items="categories"
               class="elevation-1">
@@ -35,23 +48,34 @@
                     hide-details
                   ></v-checkbox>
                 </td>
-                <td class="text-xs-left">{{ props.item._id }}</td>
                 <td class="text-xs-left">{{ props.item.name }}</td>
                 <td class="text-xs-left">
-                  <v-icon
-                    small
-                    class="ma-3"
-                    @click="editMode(props.item._id, props.item)"
-                  >
-                  edit
-                  </v-icon>
-                  <v-icon
-                    class="ma-3"
-                    small
-                    @click="deleteCategory(props.item._id)"
-                  >
-                    delete
-                  </v-icon>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <v-icon
+                        v-on="on"
+                        small
+                        class="ma-3"
+                        @click="editMode(props.item)"
+                      >
+                      edit
+                      </v-icon>
+                    </template>
+                    <span>Editar categoria</span>
+                  </v-tooltip>
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <v-icon
+                        v-on="on"
+                        class="ma-3"
+                        small
+                        @click="deleteCategory(props.item._id)"
+                      >
+                      delete
+                      </v-icon>
+                    </template>
+                    <span>Deletar categoria</span>
+                  </v-tooltip>
                 </td>
               </template>
             </v-data-table>
@@ -68,7 +92,8 @@
   export default {
     data () {
       return {
-        editMode: false,
+        addCategory: false,
+        mode: false,
         category: {},
         categories: [],
         headers: [
@@ -77,11 +102,7 @@
             sortable: false
           },
           {
-            text: 'ID',
-            sortable: false
-          },
-          {
-            text: 'Category',
+            text: 'Name',
             sortable: false
           },
           {
@@ -112,34 +133,48 @@
         controller.save(category)
         .then((response) => {
           console.log("Response save category:: ", response);
+          this.getCategories();
+          this.$data.addCategory = false;
         }).catch(err => {
           console.log("Error save category:: ", err);
         })
       },
       editMode(category){
         console.log("Edit mode");
+        this.$data.mode = true;
         this.$data.category = category;
+        this.$data.addCategory = true;
       },
-      editCategory(id, category){
-        console.log("Save category::", category);
-        controller.update(id,category)
+      editCategory(category){
+        console.log("Edit category::", category);
+        controller.update(category._id,{name: category.name})
         .then((response) => {
           console.log("Response save category:: ", response);
+          this.$data.category = {};
+          this.getCategories();
+          this.$data.addCategory = false;
         }).catch(err => {
           console.log("Error save category:: ", err);
         })
       },
       deleteCategory(idCategory){
-        console.log("Save category::", idCategory);
+        console.log("Delete category::", idCategory);
         controller.delete(idCategory)
         .then((response) => {
           console.log("Response save category:: ", response);
+          this.getCategories();
         }).catch(err => {
           console.log("Error save category:: ", err);
         })
       },
-
+      newCategory(){
+        console.log("Function new Category");
+        this.$data.addCategory = true;
+      },
+      close(){
+        console.log("close:::");
+        this.$data.addCategory = false;
+      }
     }
-    
   }
 </script>

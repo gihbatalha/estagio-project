@@ -57,7 +57,6 @@ app.get('/category/:id', (req,res) => {
 
 app.put('/category/:id', (req,res) => {
     console.log("Alterando a categoria com id ", req.params.id);
-
     category
         .updateOne({_id:ObjectId(req.params.id)}, {$set:req.body}, { upsert: true })
             .then(result => {
