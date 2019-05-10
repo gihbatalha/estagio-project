@@ -1,23 +1,18 @@
 <template>
-    <v-card>
-        <v-list>
-            <v-list-tile
-            v-for="recurso in recursos"
-            :key="recurso.name"
-            avatar
-            router-link 
-            :to="recurso.routeTo"
-            >
-                <v-list-tile-content>
-                    <v-list-tile-title v-text="recurso.name"></v-list-tile-title>
-                </v-list-tile-content>
-
-                <v-list-tile-avatar>
-                    <v-icon v-if="recurso.icon" color="pink"> {{recurso.icon}} </v-icon>
-                </v-list-tile-avatar>
-            </v-list-tile>
-        </v-list>
-    </v-card>
+    <v-container fluid grid-list-sm>
+        <v-layout row wrap>
+            <v-flex xs12 sm12 md12
+                    elevation="1"
+                    v-for="recurso in recursos" 
+                    :key="recurso.name">
+                
+                <v-btn large router-link :to="recurso.routeTo">
+                    {{recurso.name}}
+                    <v-icon right v-if="recurso.icon" color="pink"> {{recurso.icon}} </v-icon>
+                </v-btn>
+            </v-flex>
+        </v-layout>
+    </v-container>
 </template>
 
 <script>
@@ -30,7 +25,13 @@
                     name:"Categorias",
                     routeTo:"/category",
                     icon:"category"
-                }
+                },
+
+                {
+                    name:"Produtos",
+                    routeTo:"/",
+                    icon:"category"
+                },
             ]
         }
     }
