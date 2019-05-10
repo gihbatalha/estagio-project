@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-card v-if="addCategory" class="mx-auto" min-width="850">
+    <v-card v-if="showCreationModal" class="mx-auto" min-width="850">
       <v-container  grid-list-md>
         <v-layout row wrap>
           <v-toolbar color="blue darken-2" dark>
@@ -16,7 +16,7 @@
           <v-flex ma-4 xs12 sm12>
             <v-text-field v-model="category.name" label="Nome"></v-text-field>
           </v-flex>
-          <v-btn v-if="mode !== false " @click="editCategory(category)" color="info">Alterar</v-btn>
+          <v-btn v-if="edit !== false " @click="editCategory(category)" color="info">Alterar</v-btn>
           <v-btn v-else @click="saveCategory(category)" color="info">Salvar</v-btn>
         </v-layout>
       </v-container>
@@ -92,8 +92,8 @@
   export default {
     data () {
       return {
-        addCategory: false,
-        mode: false,
+        showCreationModal: false,
+        edit: false,
         category: {},
         categories: [],
         headers: [
@@ -134,16 +134,17 @@
         .then((response) => {
           console.log("Response save category:: ", response);
           this.getCategories();
-          this.$data.addCategory = false;
+          this.$data.showCreationModal = false;
         }).catch(err => {
           console.log("Error save category:: ", err);
         })
       },
       editMode(category){
         console.log("Edit mode");
-        this.$data.mode = true;
-        this.$data.category = category;
-        this.$data.addCategory = true;
+        this.$data.edit = true;
+        this.$data.category._id = category._id;
+        this.$data.category.name = category.name;
+        this.$data.showCreationModal = true;
       },
       editCategory(category){
         console.log("Edit category::", category);
@@ -152,7 +153,8 @@
           console.log("Response save category:: ", response);
           this.$data.category = {};
           this.getCategories();
-          this.$data.addCategory = false;
+          this.$data.showCreationModal = false;
+          this.$data.edit = false;
         }).catch(err => {
           console.log("Error save category:: ", err);
         })
@@ -168,12 +170,15 @@
         })
       },
       newCategory(){
-        console.log("Function new Category");
-        this.$data.addCategory = true;
+        console.log("Function new Category", JSON.stringify(this.$data.edit));
+        this.$data.showCreationModal = true;
       },
       close(){
         console.log("close:::");
-        this.$data.addCategory = false;
+        this.$data.showCreationModal = false;
+        this.$data.edit = false;
+        this.$data.category._id="";
+        this.$data.category.name="";
       }
     }
   }
